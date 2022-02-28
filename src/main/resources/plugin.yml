@@ -1,0 +1,22 @@
+name: BackupPrep
+version: '${project.version}'
+main: cc.geektip.backupprep.BackupPrep
+api-version: 1.16
+prefix: BackupPrep
+depend: [ DriveBackupV2 ]
+authors: [ Fish ]
+description: A paper plugin to make some preparations for the DriveBackup job.
+
+commands:
+  backupctrl:
+    description: The Command for Ctrl the next DriveBackup Job.
+    usage: /backupctrl [skip/restore]
+    permission: BackupPrep.ctrl
+
+permissions:
+  BackupPrep.ctrl:
+    description: The Permission for Ctrl the next DriveBackup Job.
+    default: op
+
+  BackupPrep.bypass:
+    description: The Permission for Bypass Join Restriction during DriveBackup Jobs.

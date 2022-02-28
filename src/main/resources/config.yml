@@ -1,0 +1,3 @@
+skipSetMsg: "The next backup will be skipped!"
+skipCnlMsg: "The next backup will run as scheduled!"
+kickInfoMsg: "The server is maintaining. Please rejoin later."
