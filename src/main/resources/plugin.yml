@@ -1,7 +1,7 @@
 name: BackupPrep
 version: '${project.version}'
 main: cc.geektip.backupprep.BackupPrep
-api-version: 1.16
+api-version: 1.13
 prefix: BackupPrep
 depend: [ DriveBackupV2 ]
 authors: [ Fish ]
