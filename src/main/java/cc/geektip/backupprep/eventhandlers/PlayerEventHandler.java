@@ -5,10 +5,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 
-import java.util.UUID;
 
 /**
  * @author Fish
@@ -20,12 +19,11 @@ public class PlayerEventHandler implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onAsyncPlayerPreLogin(AsyncPlayerPreLoginEvent e) {
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerLoginEvent(PlayerLoginEvent e) {
         if (plugin.isMaintain().get()) {
-            UUID uuid = e.getUniqueId();
-            Player player = plugin.getServer().getPlayer(uuid);
-            if (player == null || !player.hasPermission("BackupPrep.bypass")) {
+            Player player = e.getPlayer();
+            if (!player.hasPermission("BackupPrep.bypass")) {
                 e.disallow(Result.KICK_OTHER, plugin.getKickInfoMsg());
             }
         }
