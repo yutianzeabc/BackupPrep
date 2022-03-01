@@ -21,7 +21,7 @@ public class PlayerEventHandler implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerLoginEvent(PlayerLoginEvent e) {
-        if (plugin.isMaintain().get()) {
+        if (plugin.isBlockLogin().get()) {
             Player player = e.getPlayer();
             if (!player.hasPermission("BackupPrep.bypass")) {
                 e.disallow(Result.KICK_OTHER, plugin.getKickInfoMsg());

@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class BackupPrep extends JavaPlugin {
     BackupPrep self = this;
-    AtomicBoolean isMaintain = new AtomicBoolean(false);
+    AtomicBoolean isBlockLogin = new AtomicBoolean(false);
     AtomicBoolean isSkipOnce = new AtomicBoolean(false);
     AtomicBoolean isLastSucceed = new AtomicBoolean(true);
 
@@ -53,7 +53,7 @@ public final class BackupPrep extends JavaPlugin {
                 isSkipOnce.set(false);
                 return Boolean.FALSE;
             }
-            isMaintain.set(true);
+            isBlockLogin.set(true);
             Future<Object> future = getServer().getScheduler().callSyncMethod(self, () -> {
                 for (Player player : getServer().getOnlinePlayers()) {
                     player.kick(kickInfoMsg);
@@ -65,11 +65,11 @@ public final class BackupPrep extends JavaPlugin {
         });
 
         DriveBackupApi.onBackupDone(() -> {
-            isMaintain.set(false);
+            isBlockLogin.set(false);
             isLastSucceed.set(true);
         });
         DriveBackupApi.onBackupError(() -> {
-            isMaintain.set(false);
+            isBlockLogin.set(false);
             isLastSucceed.set(false);
         });
     }
@@ -79,8 +79,8 @@ public final class BackupPrep extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public AtomicBoolean isMaintain() {
-        return isMaintain;
+    public AtomicBoolean isBlockLogin() {
+        return isBlockLogin;
     }
 
     public AtomicBoolean isSkipOnce() {
@@ -118,7 +118,6 @@ public final class BackupPrep extends JavaPlugin {
     public Component getKickInfoMsg() {
         return kickInfoMsg;
     }
-
 
 
 }

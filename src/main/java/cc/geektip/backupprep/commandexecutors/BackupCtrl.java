@@ -38,13 +38,13 @@ public class BackupCtrl implements TabExecutor {
                     plugin.isSkipOnce().set(false);
                     sender.sendMessage(plugin.getSkipCnlMsg());
                 } else if ("block".equalsIgnoreCase(args[0])) {
-                    plugin.isMaintain().set(true);
+                    plugin.isBlockLogin().set(true);
                     sender.sendMessage(plugin.getBlockSetMsg());
                 } else if ("unblock".equalsIgnoreCase(args[0])) {
-                    plugin.isMaintain().set(false);
+                    plugin.isBlockLogin().set(false);
                     sender.sendMessage(plugin.getBlockCnlMsg());
                 } else if ("status".equalsIgnoreCase(args[0])) {
-                    Component statusInfo = plugin.getMsgHeader().append(Component.text(String.format("[SkipOnce=%b, BlockLogin=%b, LastSucceed=%b]", plugin.isSkipOnce().get(), plugin.isMaintain().get(), plugin.isLastSucceed().get()), NamedTextColor.WHITE));
+                    Component statusInfo = plugin.getMsgHeader().append(Component.text(String.format("[SkipOnce=%b, BlockLogin=%b, LastSucceed=%b]", plugin.isSkipOnce().get(), plugin.isBlockLogin().get(), plugin.isLastSucceed().get()), NamedTextColor.WHITE));
                     sender.sendMessage(statusInfo);
                 } else {
                     sender.sendMessage(plugin.getIllCmdMsg());
