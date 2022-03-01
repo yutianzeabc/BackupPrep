@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Fish
  */
 public final class BackupPrep extends JavaPlugin {
-    BackupPrep self = this;
+    BackupPrep plugin = this;
     AtomicBoolean isBlockLogin = new AtomicBoolean(false);
     AtomicBoolean isSkipOnce = new AtomicBoolean(false);
     AtomicBoolean isLastSucceed = new AtomicBoolean(true);
@@ -54,7 +54,7 @@ public final class BackupPrep extends JavaPlugin {
                 return Boolean.FALSE;
             }
             isBlockLogin.set(true);
-            Future<Object> future = getServer().getScheduler().callSyncMethod(self, () -> {
+            Future<Object> future = getServer().getScheduler().callSyncMethod(plugin, () -> {
                 for (Player player : getServer().getOnlinePlayers()) {
                     player.kick(kickInfoMsg);
                 }
