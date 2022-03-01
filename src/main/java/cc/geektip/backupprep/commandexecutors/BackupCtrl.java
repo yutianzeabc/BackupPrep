@@ -21,26 +21,29 @@ public class BackupCtrl implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player player) {
-            if (player.hasPermission("BackupPrep.ctrl")) {
-                if (args.length == 1) {
-                    if ("skip".equalsIgnoreCase(args[0])) {
-                        plugin.isSkipOnce().set(true);
-                        player.sendMessage(plugin.getSkipSetMsg());
-                    } else if ("restore".equalsIgnoreCase(args[0])) {
-                        plugin.isSkipOnce().set(false);
-                        player.sendMessage(plugin.getSkipCnlMsg());
-                    } else {
-                        player.sendMessage(plugin.getIllCmdMsg());
-                    }
+
+        if (!(sender instanceof Player) || sender.hasPermission("BackupPrep.ctrl")) {
+            if (args.length == 1) {
+                if ("skip".equalsIgnoreCase(args[0])) {
+                    plugin.isSkipOnce().set(true);
+                    sender.sendMessage(plugin.getSkipSetMsg());
+                } else if ("restore".equalsIgnoreCase(args[0])) {
+                    plugin.isSkipOnce().set(false);
+                    sender.sendMessage(plugin.getSkipCnlMsg());
+                } else if ("block".equalsIgnoreCase(args[0])) {
+                    plugin.isMaintain().set(true);
+                    sender.sendMessage(plugin.getBlockSetMsg());
+                } else if ("unblock".equalsIgnoreCase(args[0])) {
+                    plugin.isMaintain().set(false);
+                    sender.sendMessage(plugin.getBlockCnlMsg());
                 } else {
-                    player.sendMessage(plugin.getIllCmdMsg());
+                    sender.sendMessage(plugin.getIllCmdMsg());
                 }
             } else {
-                player.sendMessage(getPermissionMessage());
+                sender.sendMessage(plugin.getIllCmdMsg());
             }
         } else {
-            plugin.getLogger().info("Only Players can use this command.");
+            sender.sendMessage(getPermissionMessage());
         }
         return true;
     }

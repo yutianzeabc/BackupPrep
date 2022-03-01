@@ -1,3 +1,6 @@
 skipSetMsg: "The next backup will be skipped!"
 skipCnlMsg: "The next backup will run as scheduled!"
+blockSetMsg: "The server will block login!"
+blockCnlMsg: "The server will no longer block login!"
 kickInfoMsg: "The server is maintaining. Please rejoin later."
+illCmdMsg: "Illegal Command! Usage: /backupctrl [skip/restore/block/unblock]"

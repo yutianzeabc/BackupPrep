@@ -23,9 +23,11 @@ public final class BackupPrep extends JavaPlugin {
     AtomicBoolean isSkipOnce = new AtomicBoolean(false);
 
     Component msgHeader = Component.text("[BP] ", NamedTextColor.GREEN);
-    Component illCmdMsg = msgHeader.append(Component.text("Illegal Command!",NamedTextColor.RED));
+    Component illCmdMsg;
     Component skipSetMsg;
     Component skipCnlMsg;
+    Component blockSetMsg;
+    Component blockCnlMsg;
     Component kickInfoMsg;
 
     @Override
@@ -35,8 +37,11 @@ public final class BackupPrep extends JavaPlugin {
         File defaultConfig = new File(getDataFolder(), "config.yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(defaultConfig);
 
+        illCmdMsg = msgHeader.append(Component.text(config.getString("illCmdMsg"), NamedTextColor.RED));
         skipSetMsg = msgHeader.append(Component.text(config.getString("skipSetMsg")));
         skipCnlMsg = msgHeader.append(Component.text(config.getString("skipCnlMsg")));
+        blockSetMsg = msgHeader.append(Component.text(config.getString("blockSetMsg")));
+        blockCnlMsg = msgHeader.append(Component.text(config.getString("blockCnlMsg")));
         kickInfoMsg = Component.text(config.getString("kickInfoMsg"));
 
         this.getCommand("backupctrl").setExecutor(new BackupCtrl(this));
@@ -59,6 +64,7 @@ public final class BackupPrep extends JavaPlugin {
         });
 
         DriveBackupApi.onBackupDone(() -> isMaintain.set(false));
+        DriveBackupApi.onBackupError(() -> isMaintain.set(false));
     }
 
     @Override
@@ -66,19 +72,13 @@ public final class BackupPrep extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public AtomicBoolean isMaintain() {
-        return isMaintain;
-    }
+    public AtomicBoolean isMaintain() { return isMaintain; }
     public AtomicBoolean isSkipOnce() { return isSkipOnce; }
-    public Component getIllCmdMsg() {
-        return illCmdMsg;
-    }
-    public Component getSkipSetMsg() {
-        return skipSetMsg;
-    }
+    public Component getIllCmdMsg() { return illCmdMsg; }
+    public Component getSkipSetMsg() { return skipSetMsg; }
     public Component getSkipCnlMsg() { return skipCnlMsg; }
-    public Component getKickInfoMsg() {
-        return kickInfoMsg;
-    }
+    public Component getBlockSetMsg() { return blockSetMsg; }
+    public Component getBlockCnlMsg() { return blockCnlMsg; }
+    public Component getKickInfoMsg() { return kickInfoMsg; }
 
 }
