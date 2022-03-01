@@ -1,6 +1,8 @@
 package cc.geektip.backupprep.commandexecutors;
 
 import cc.geektip.backupprep.BackupPrep;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,6 +38,9 @@ public class BackupCtrl implements CommandExecutor {
                 } else if ("unblock".equalsIgnoreCase(args[0])) {
                     plugin.isMaintain().set(false);
                     sender.sendMessage(plugin.getBlockCnlMsg());
+                } else if ("status".equalsIgnoreCase(args[0])) {
+                    Component statusInfo = plugin.getMsgHeader().append(Component.text(String.format("[SkipOnce=%b, BlockLogin=%b, LastSucceed=%b]", plugin.isSkipOnce().get(), plugin.isMaintain().get(), plugin.isLastSucceed().get()), NamedTextColor.WHITE));
+                    sender.sendMessage(statusInfo);
                 } else {
                     sender.sendMessage(plugin.getIllCmdMsg());
                 }

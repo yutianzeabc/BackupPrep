@@ -21,6 +21,7 @@ public final class BackupPrep extends JavaPlugin {
     BackupPrep plugin = this;
     AtomicBoolean isMaintain = new AtomicBoolean(false);
     AtomicBoolean isSkipOnce = new AtomicBoolean(false);
+    AtomicBoolean isLastSucceed = new AtomicBoolean(true);
 
     Component msgHeader = Component.text("[BP] ", NamedTextColor.GREEN);
     Component illCmdMsg;
@@ -63,8 +64,14 @@ public final class BackupPrep extends JavaPlugin {
             return Boolean.TRUE;
         });
 
-        DriveBackupApi.onBackupDone(() -> isMaintain.set(false));
-        DriveBackupApi.onBackupError(() -> isMaintain.set(false));
+        DriveBackupApi.onBackupDone(() -> {
+            isMaintain.set(false);
+            isLastSucceed.set(true);
+        });
+        DriveBackupApi.onBackupError(() -> {
+            isMaintain.set(false);
+            isLastSucceed.set(false);
+        });
     }
 
     @Override
@@ -72,13 +79,46 @@ public final class BackupPrep extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public AtomicBoolean isMaintain() { return isMaintain; }
-    public AtomicBoolean isSkipOnce() { return isSkipOnce; }
-    public Component getIllCmdMsg() { return illCmdMsg; }
-    public Component getSkipSetMsg() { return skipSetMsg; }
-    public Component getSkipCnlMsg() { return skipCnlMsg; }
-    public Component getBlockSetMsg() { return blockSetMsg; }
-    public Component getBlockCnlMsg() { return blockCnlMsg; }
-    public Component getKickInfoMsg() { return kickInfoMsg; }
+    public AtomicBoolean isMaintain() {
+        return isMaintain;
+    }
+
+    public AtomicBoolean isSkipOnce() {
+        return isSkipOnce;
+    }
+
+    public AtomicBoolean isLastSucceed() {
+        return isLastSucceed;
+    }
+
+    public Component getMsgHeader() {
+        return msgHeader;
+    }
+
+    public Component getIllCmdMsg() {
+        return illCmdMsg;
+    }
+
+    public Component getSkipSetMsg() {
+        return skipSetMsg;
+    }
+
+    public Component getSkipCnlMsg() {
+        return skipCnlMsg;
+    }
+
+    public Component getBlockSetMsg() {
+        return blockSetMsg;
+    }
+
+    public Component getBlockCnlMsg() {
+        return blockCnlMsg;
+    }
+
+    public Component getKickInfoMsg() {
+        return kickInfoMsg;
+    }
+
+
 
 }

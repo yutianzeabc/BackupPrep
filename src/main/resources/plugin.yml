@@ -10,7 +10,7 @@ description: A paper plugin to make some preparations for the DriveBackup job.
 commands:
   backupctrl:
     description: The Command for Ctrl the next DriveBackup Job.
-    usage: /backupctrl [skip/restore/block/unblock]
+    usage: /backupctrl [skip/restore/block/unblock/status]
     permission: BackupPrep.ctrl
 
 permissions:
