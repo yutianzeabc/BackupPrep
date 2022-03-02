@@ -15,8 +15,21 @@ commands:
 
 permissions:
   BackupPrep.ctrl:
-    description: The Permission for Ctrl the next DriveBackup Job.
+    description: The Permission for Using the BackupCtrl Commands.
+    default: op
+
+  BackupPrep.ctrl.skip:
+    description: The Permission to Skip or Restore the next DriveBackup Job.
+    default: op
+
+  BackupPrep.ctrl.block:
+    description: The Permission to Block or Unblock new Login.
+    default: op
+
+  BackupPrep.ctrl.status:
+    description: The Permission to Check the Plugin Status.
     default: op
 
   BackupPrep.bypass:
-    description: The Permission for Bypass Join Restriction during DriveBackup Jobs.
+    description: The Permission to Bypass the Login Block Check.
+    default: false

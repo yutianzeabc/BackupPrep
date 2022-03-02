@@ -45,7 +45,7 @@ public final class BackupPrep extends JavaPlugin {
         blockCnlMsg = msgHeader.append(Component.text(config.getString("blockCnlMsg")));
         kickInfoMsg = Component.text(config.getString("kickInfoMsg"));
 
-        this.getCommand("backupctrl").setExecutor(new BackupCtrl(this));
+        getCommand("backupctrl").setExecutor(new BackupCtrl(this));
         getServer().getPluginManager().registerEvents(new PlayerEventHandler(this), this);
 
         DriveBackupApi.beforeBackupStart(() -> {
@@ -118,6 +118,4 @@ public final class BackupPrep extends JavaPlugin {
     public Component getKickInfoMsg() {
         return kickInfoMsg;
     }
-
-
 }

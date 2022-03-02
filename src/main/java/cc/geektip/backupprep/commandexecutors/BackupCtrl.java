@@ -6,12 +6,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.bukkit.Bukkit.getPermissionMessage;
@@ -28,24 +26,43 @@ public class BackupCtrl implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-
-        if (!(sender instanceof Player) || sender.hasPermission("BackupPrep.ctrl")) {
+        if (sender.hasPermission("BackupPrep.ctrl")) {
             if (args.length == 1) {
                 if ("skip".equalsIgnoreCase(args[0])) {
-                    plugin.isSkipOnce().set(true);
-                    sender.sendMessage(plugin.getSkipSetMsg());
+                    if (sender.hasPermission("BackupPrep.ctrl.skip")) {
+                        plugin.isSkipOnce().set(true);
+                        sender.sendMessage(plugin.getSkipSetMsg());
+                    } else {
+                        sender.sendMessage(getPermissionMessage());
+                    }
                 } else if ("restore".equalsIgnoreCase(args[0])) {
-                    plugin.isSkipOnce().set(false);
-                    sender.sendMessage(plugin.getSkipCnlMsg());
+                    if (sender.hasPermission("BackupPrep.ctrl.skip")) {
+                        plugin.isSkipOnce().set(false);
+                        sender.sendMessage(plugin.getSkipCnlMsg());
+                    } else {
+                        sender.sendMessage(getPermissionMessage());
+                    }
                 } else if ("block".equalsIgnoreCase(args[0])) {
-                    plugin.isBlockLogin().set(true);
-                    sender.sendMessage(plugin.getBlockSetMsg());
+                    if (sender.hasPermission("BackupPrep.ctrl.block")) {
+                        plugin.isBlockLogin().set(true);
+                        sender.sendMessage(plugin.getBlockSetMsg());
+                    } else {
+                        sender.sendMessage(getPermissionMessage());
+                    }
                 } else if ("unblock".equalsIgnoreCase(args[0])) {
-                    plugin.isBlockLogin().set(false);
-                    sender.sendMessage(plugin.getBlockCnlMsg());
+                    if (sender.hasPermission("BackupPrep.ctrl.block")) {
+                        plugin.isBlockLogin().set(false);
+                        sender.sendMessage(plugin.getBlockCnlMsg());
+                    } else {
+                        sender.sendMessage(getPermissionMessage());
+                    }
                 } else if ("status".equalsIgnoreCase(args[0])) {
-                    Component statusInfo = plugin.getMsgHeader().append(Component.text(String.format("[SkipOnce=%b, BlockLogin=%b, LastSucceed=%b]", plugin.isSkipOnce().get(), plugin.isBlockLogin().get(), plugin.isLastSucceed().get()), NamedTextColor.WHITE));
-                    sender.sendMessage(statusInfo);
+                    if (sender.hasPermission("BackupPrep.ctrl.status")) {
+                        Component statusInfo = plugin.getMsgHeader().append(Component.text(String.format("[SkipOnce=%b, BlockLogin=%b, LastSucceed=%b]", plugin.isSkipOnce().get(), plugin.isBlockLogin().get(), plugin.isLastSucceed().get()), NamedTextColor.WHITE));
+                        sender.sendMessage(statusInfo);
+                    } else {
+                        sender.sendMessage(getPermissionMessage());
+                    }
                 } else {
                     sender.sendMessage(plugin.getIllCmdMsg());
                 }
@@ -61,7 +78,19 @@ public class BackupCtrl implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
-            return new ArrayList<>(Arrays.asList("skip", "restore", "block", "unblock", "status"));
+            ArrayList<String> cmd = new ArrayList<>();
+            if (sender.hasPermission("BackupPrep.ctrl.skip")) {
+                cmd.add("skip");
+                cmd.add("restore");
+            }
+            if (sender.hasPermission("BackupPrep.ctrl.block")) {
+                cmd.add("block");
+                cmd.add("unblock");
+            }
+            if (sender.hasPermission("BackupPrep.ctrl.status")) {
+                cmd.add("status");
+            }
+            return cmd;
         }
         return null;
     }
