@@ -1,6 +1,11 @@
-skipSetMsg: "The next backup will be skipped!"
-skipCnlMsg: "The next backup will run as scheduled!"
-blockSetMsg: "The server will block login!"
-blockCnlMsg: "The server will no longer block login!"
-kickInfoMsg: "The server is maintaining. Please rejoin later."
-illCmdMsg: "Illegal Command! Usage: /backupctrl [skip/restore/block/unblock/status]"
+status:
+  isBlockLogin: false
+  isSkipOnce: false
+  isLastSucceed: true
+msg:
+  skipSet: "The next backup will be skipped!"
+  skipCnl: "The next backup will run as scheduled!"
+  blockSet: "The server will block login!"
+  blockCnl: "The server will no longer block login!"
+  kickInfo: "The server is maintaining. Please rejoin later."
+  illCmd: "Illegal Command! Usage: /backupctrl [skip/restore/block/unblock/status]"

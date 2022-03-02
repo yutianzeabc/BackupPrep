@@ -4,13 +4,10 @@ import cc.geektip.backupprep.commandexecutors.BackupCtrl;
 import cc.geektip.backupprep.eventhandlers.PlayerEventHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import ratismal.drivebackup.DriveBackupApi;
 
-import java.io.File;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -19,11 +16,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class BackupPrep extends JavaPlugin {
     BackupPrep plugin = this;
-    AtomicBoolean isBlockLogin = new AtomicBoolean(false);
-    AtomicBoolean isSkipOnce = new AtomicBoolean(false);
-    AtomicBoolean isLastSucceed = new AtomicBoolean(true);
 
-    Component msgHeader = Component.text("[BP] ", NamedTextColor.GREEN);
+    AtomicBoolean isBlockLogin;
+    AtomicBoolean isSkipOnce;
+    AtomicBoolean isLastSucceed;
+
+    Component msgHeader;
     Component illCmdMsg;
     Component skipSetMsg;
     Component skipCnlMsg;
@@ -35,15 +33,18 @@ public final class BackupPrep extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         saveDefaultConfig();
-        File defaultConfig = new File(getDataFolder(), "config.yml");
-        FileConfiguration config = YamlConfiguration.loadConfiguration(defaultConfig);
 
-        illCmdMsg = msgHeader.append(Component.text(config.getString("illCmdMsg"), NamedTextColor.RED));
-        skipSetMsg = msgHeader.append(Component.text(config.getString("skipSetMsg")));
-        skipCnlMsg = msgHeader.append(Component.text(config.getString("skipCnlMsg")));
-        blockSetMsg = msgHeader.append(Component.text(config.getString("blockSetMsg")));
-        blockCnlMsg = msgHeader.append(Component.text(config.getString("blockCnlMsg")));
-        kickInfoMsg = Component.text(config.getString("kickInfoMsg"));
+        isBlockLogin = new AtomicBoolean(getConfig().getBoolean("status.isBlockLogin"));
+        isSkipOnce = new AtomicBoolean(getConfig().getBoolean("status.isSkipOnce"));
+        isLastSucceed = new AtomicBoolean(getConfig().getBoolean("status.isLastSucceed"));
+
+        msgHeader = Component.text("[BP] ", NamedTextColor.GREEN);
+        illCmdMsg = msgHeader.append(Component.text(getConfig().getString("msg.illCmd", "illCmd"), NamedTextColor.RED));
+        skipSetMsg = msgHeader.append(Component.text(getConfig().getString("msg.skipSet", "skipSet")));
+        skipCnlMsg = msgHeader.append(Component.text(getConfig().getString("msg.skipCnl", "skipCnl")));
+        blockSetMsg = msgHeader.append(Component.text(getConfig().getString("msg.blockSet", "blockSet")));
+        blockCnlMsg = msgHeader.append(Component.text(getConfig().getString("msg.blockCnl", "blockCnl")));
+        kickInfoMsg = Component.text(getConfig().getString("msg.kickInfo", "kickInfo"));
 
         getCommand("backupctrl").setExecutor(new BackupCtrl(this));
         getServer().getPluginManager().registerEvents(new PlayerEventHandler(this), this);
@@ -68,6 +69,7 @@ public final class BackupPrep extends JavaPlugin {
             isBlockLogin.set(false);
             isLastSucceed.set(true);
         });
+
         DriveBackupApi.onBackupError(() -> {
             isBlockLogin.set(false);
             isLastSucceed.set(false);
@@ -77,6 +79,10 @@ public final class BackupPrep extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        getConfig().set("status.isBlockLogin", isBlockLogin.get());
+        getConfig().set("status.isSkipOnce", isSkipOnce.get());
+        getConfig().set("status.isLastSucceed", isLastSucceed.get());
+        saveConfig();
     }
 
     public AtomicBoolean isBlockLogin() {
