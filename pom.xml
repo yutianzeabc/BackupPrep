@@ -6,7 +6,7 @@
 
     <groupId>cc.geektip</groupId>
     <artifactId>BackupPrep</artifactId>
-    <version>2.5.2</version>
+    <version>2.5.3</version>
     <packaging>jar</packaging>
 
     <name>BackupPrep</name>

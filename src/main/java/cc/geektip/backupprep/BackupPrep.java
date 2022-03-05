@@ -50,11 +50,10 @@ public final class BackupPrep extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerEventHandler(this), this);
 
         DriveBackupApi.beforeBackupStart(() -> {
-            if (isSkipOnce.get()) {
-                isSkipOnce.set(false);
+            if (isSkipOnce.compareAndSet(true,false)) {
                 return Boolean.FALSE;
             }
-            isBlockLogin.set(true);
+            isBlockLogin.getAndSet(true);
             Future<Object> future = getServer().getScheduler().callSyncMethod(plugin, () -> {
                 for (Player player : getServer().getOnlinePlayers()) {
                     player.kick(kickInfoMsg);
@@ -66,13 +65,13 @@ public final class BackupPrep extends JavaPlugin {
         });
 
         DriveBackupApi.onBackupDone(() -> {
-            isBlockLogin.set(false);
-            isLastSucceed.set(true);
+            isBlockLogin.getAndSet(false);
+            isLastSucceed.getAndSet(true);
         });
 
         DriveBackupApi.onBackupError(() -> {
-            isBlockLogin.set(false);
-            isLastSucceed.set(false);
+            isBlockLogin.getAndSet(false);
+            isLastSucceed.getAndSet(false);
         });
     }
 

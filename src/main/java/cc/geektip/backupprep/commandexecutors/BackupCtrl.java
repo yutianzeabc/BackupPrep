@@ -30,28 +30,28 @@ public class BackupCtrl implements TabExecutor {
             if (args.length == 1) {
                 if ("skip".equalsIgnoreCase(args[0])) {
                     if (sender.hasPermission("BackupPrep.ctrl.skip")) {
-                        plugin.isSkipOnce().set(true);
+                        plugin.isSkipOnce().getAndSet(true);
                         sender.sendMessage(plugin.getSkipSetMsg());
                     } else {
                         sender.sendMessage(getPermissionMessage());
                     }
                 } else if ("restore".equalsIgnoreCase(args[0])) {
                     if (sender.hasPermission("BackupPrep.ctrl.skip")) {
-                        plugin.isSkipOnce().set(false);
+                        plugin.isSkipOnce().getAndSet(false);
                         sender.sendMessage(plugin.getSkipCnlMsg());
                     } else {
                         sender.sendMessage(getPermissionMessage());
                     }
                 } else if ("block".equalsIgnoreCase(args[0])) {
                     if (sender.hasPermission("BackupPrep.ctrl.block")) {
-                        plugin.isBlockLogin().set(true);
+                        plugin.isBlockLogin().getAndSet(true);
                         sender.sendMessage(plugin.getBlockSetMsg());
                     } else {
                         sender.sendMessage(getPermissionMessage());
                     }
                 } else if ("unblock".equalsIgnoreCase(args[0])) {
                     if (sender.hasPermission("BackupPrep.ctrl.block")) {
-                        plugin.isBlockLogin().set(false);
+                        plugin.isBlockLogin().getAndSet(false);
                         sender.sendMessage(plugin.getBlockCnlMsg());
                     } else {
                         sender.sendMessage(getPermissionMessage());
