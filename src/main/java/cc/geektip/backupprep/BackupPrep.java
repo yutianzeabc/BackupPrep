@@ -67,13 +67,13 @@ public final class BackupPrep extends JavaPlugin {
         DriveBackupApi.onBackupDone(() -> {
             isBlockLogin.getAndSet(false);
             isLastSucceed.getAndSet(true);
-            getServer().dispatchCommand(getServer().getConsoleSender(), "restart");
+            getServer().getScheduler().runTaskLater(this, () -> getServer().dispatchCommand(getServer().getConsoleSender(), "restart"), 200);
         });
 
         DriveBackupApi.onBackupError(() -> {
             isBlockLogin.getAndSet(false);
             isLastSucceed.getAndSet(false);
-            getServer().dispatchCommand(getServer().getConsoleSender(), "restart");
+            getServer().getScheduler().runTaskLater(this, () -> getServer().dispatchCommand(getServer().getConsoleSender(), "restart"), 200);
         });
     }
 
