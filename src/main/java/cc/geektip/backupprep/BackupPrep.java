@@ -54,7 +54,7 @@ public final class BackupPrep extends JavaPlugin {
                 return Boolean.FALSE;
             }
             isBlockLogin.getAndSet(true);
-            getServer().getScheduler().runTaskLaterAsynchronously(this, () -> isBlockLogin().getAndSet(false), 72000);
+            getServer().getScheduler().runTaskLaterAsynchronously(this, () -> isBlockLogin.getAndSet(false), 72000);
             Future<Object> future = getServer().getScheduler().callSyncMethod(this, () -> {
                 for (Player player : getServer().getOnlinePlayers()) {
                     player.kick(kickInfoMsg);
