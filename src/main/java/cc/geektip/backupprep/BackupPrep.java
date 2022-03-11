@@ -34,7 +34,7 @@ public final class BackupPrep extends JavaPlugin {
         saveDefaultConfig();
 
         FileConfiguration cfg = getConfig();
-        isBlockLogin = new AtomicBoolean(cfg.getBoolean("status.isBlockLogin"));
+        isBlockLogin = new AtomicBoolean(false);
         isSkipOnce = new AtomicBoolean(cfg.getBoolean("status.isSkipOnce"));
         isLastSucceed = new AtomicBoolean(cfg.getBoolean("status.isLastSucceed"));
 
@@ -54,6 +54,7 @@ public final class BackupPrep extends JavaPlugin {
                 return Boolean.FALSE;
             }
             isBlockLogin.getAndSet(true);
+            getServer().getScheduler().runTaskLaterAsynchronously(this, () -> isBlockLogin().getAndSet(false), 72000);
             Future<Object> future = getServer().getScheduler().callSyncMethod(this, () -> {
                 for (Player player : getServer().getOnlinePlayers()) {
                     player.kick(kickInfoMsg);
